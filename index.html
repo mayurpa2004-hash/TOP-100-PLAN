@@ -44,47 +44,51 @@
         .text-error { color: var(--error); }
 
         /* Components */
-        .btn { border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .btn { border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.1s, background-color 0.2s; font-size: 0.9rem; }
+        .btn:active { transform: scale(0.96); }
         .btn-primary { background-color: var(--primary); color: #000; }
         .btn-secondary { background-color: var(--secondary); color: #000; }
         .btn-outline { background: transparent; border: 1px solid var(--text-muted); color: var(--text); }
         .btn-danger { background-color: rgba(207, 102, 121, 0.2); color: var(--error); border: 1px solid var(--error); }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
         
-        .card { background-color: var(--surface); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .card { background-color: var(--surface); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: transform 0.2s ease; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--surface-2); padding-bottom: 8px; }
         
-        input, select, textarea { width: 100%; background: var(--surface-2); border: 1px solid #444; color: var(--text); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 1rem; }
+        input, select, textarea { width: 100%; background: var(--surface-2); border: 1px solid #444; color: var(--text); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 1rem; transition: border-color 0.2s; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
 
         /* Nav */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height); background: var(--surface); border-top: 1px solid #333; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.7rem; flex: 1; height: 100%; cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.7rem; flex: 1; height: 100%; cursor: pointer; transition: color 0.2s; }
         .nav-item.active { color: var(--primary); }
-        .nav-icon { font-size: 1.4rem; margin-bottom: 2px; }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 2px; transition: transform 0.2s; }
+        .nav-item:active .nav-icon { transform: scale(0.9); }
 
         /* Dashboard specific */
-        .countdown-box { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: white; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
+        .countdown-box { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: white; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(187, 134, 252, 0.3); }
         .count-number { font-size: 2.5rem; font-weight: 800; line-height: 1; }
-        .progress-circle { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--secondary) 0%, var(--surface-2) 0); display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; }
+        .progress-circle { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--secondary) 0%, var(--surface-2) 0); display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; transition: background 0.5s ease; }
         .progress-inner { width: 85px; height: 85px; background: var(--surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
 
         /* Plan specific */
         .day-card.today { border: 2px solid var(--primary); }
-        .checklist-item { display: flex; align-items: flex-start; margin-bottom: 12px; padding: 8px; background: var(--surface-2); border-radius: 8px; }
-        .custom-checkbox { width: 24px; height: 24px; border: 2px solid var(--text-muted); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; }
-        .custom-checkbox.checked { background: var(--success); border-color: var(--success); }
+        .checklist-item { display: flex; align-items: flex-start; margin-bottom: 12px; padding: 8px; background: var(--surface-2); border-radius: 8px; transition: background-color 0.2s; }
+        .checklist-item:active { background-color: #383838; }
+        .custom-checkbox { width: 24px; height: 24px; border: 2px solid var(--text-muted); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .custom-checkbox.checked { background: var(--success); border-color: var(--success); transform: scale(1.1); }
         .custom-checkbox.checked::after { content: '✔'; color: white; font-size: 14px; }
         .task-content { flex: 1; }
         .task-time { font-size: 0.75rem; color: var(--secondary); font-weight: bold; display: block; margin-bottom: 2px; }
         .task-title { font-size: 0.95rem; line-height: 1.3; }
         .class-toggle { display: flex; gap: 8px; margin-top: 8px; }
-        .class-btn { flex: 1; padding: 8px; background: #333; border-radius: 6px; text-align: center; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; }
-        .class-btn.selected { background: var(--primary-dark); border-color: var(--primary); color: white; }
+        .class-btn { flex: 1; padding: 8px; background: #333; border-radius: 6px; text-align: center; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .class-btn.selected { background: var(--primary-dark); border-color: var(--primary); color: white; transform: scale(1.02); }
         .night-header { color: #aaa; text-transform: uppercase; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; margin: 16px 0 8px 0; border-top: 1px solid #333; padding-top: 12px; display: flex; align-items: center; gap: 6px; }
 
         /* Timer Styles */
-        .timer-btn { margin-top: 8px; padding: 6px 12px; background: #333; border: 1px solid #555; border-radius: 6px; color: #fff; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .timer-btn { margin-top: 8px; padding: 6px 12px; background: #333; border: 1px solid #555; border-radius: 6px; color: #fff; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .timer-btn:active { transform: scale(0.95); }
         .timer-display { margin-top: 8px; font-family: monospace; font-size: 1.2rem; background: #000; padding: 4px 12px; border-radius: 6px; display: inline-block; border: 1px solid #333; color: var(--secondary); }
         .timer-red { color: var(--error); border-color: var(--error); animation: pulse 1s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
@@ -105,8 +109,10 @@
         .priority-high { color: var(--error); border: 1px solid var(--error); }
 
         /* Modal */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--surface); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; border-radius: 16px; padding: 20px; position: relative; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.3s; }
+        .modal.hidden { opacity: 0; pointer-events: none; display: flex !important; visibility: hidden; }
+        .modal-content { background: var(--surface); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; border-radius: 16px; padding: 20px; position: relative; transform: translateY(20px); transition: transform 0.3s; }
+        .modal:not(.hidden) .modal-content { transform: translateY(0); }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; }
 
         /* Toast Notification */
@@ -120,6 +126,26 @@
         }
         .toast.show { opacity: 1; }
         .toast-icon { color: var(--success); }
+        
+        .daily-log-area { width: 100%; background: #222; border: 1px solid #444; color: #ddd; border-radius: 8px; padding: 10px; font-size: 0.9rem; margin-top: 15px; min-height: 60px; font-family: monospace; }
+        .daily-log-area:focus { outline: none; border-color: var(--secondary); }
+
+        /* Success Animation Popup */
+        .success-overlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+        .success-overlay.active { opacity: 1; animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .success-content { background: rgba(0, 200, 83, 0.95); padding: 20px 40px; border-radius: 50px; text-align: center; color: white; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .success-icon-large { font-size: 2.5rem; margin-bottom: 5px; animation: bounce 1s infinite; }
+        .success-text { font-weight: bold; font-size: 1.2rem; white-space: nowrap; }
+        
+        @keyframes popUp {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
 
     </style>
 </head>
@@ -129,6 +155,14 @@
     <div id="toast" class="toast">
         <span class="toast-icon">✔</span> 
         <span id="toast-msg">Data Saved</span>
+    </div>
+
+    <!-- SUCCESS POPUP -->
+    <div id="success-overlay" class="success-overlay">
+        <div class="success-content">
+            <div class="success-icon-large">🎉</div>
+            <div class="success-text">Good Job!</div>
+        </div>
     </div>
 
     <!-- PAGES -->
@@ -158,7 +192,7 @@
                     </div>
                     <div style="flex:1; margin-left: 20px;">
                         <div class="flex justify-between text-sm mb-2">
-                            <span>Plan Completion</span>
+                            <span>Plan Completion <span class="text-xs text-muted">(Auto-saved)</span></span>
                             <span class="text-primary" id="overall-pct-text">0%</span>
                         </div>
                         <div style="height:6px; background:#333; border-radius:3px; overflow:hidden;">
@@ -172,8 +206,8 @@
             </div>
 
             <div class="flex gap-2 mb-4">
-                <button onclick="exportData()" class="btn btn-outline flex-1">Backup Data</button>
-                <button onclick="document.getElementById('import-file').click()" class="btn btn-outline flex-1">Restore</button>
+                <button onclick="exportData()" class="btn btn-primary flex-1">💾 Save to Device</button>
+                <button onclick="document.getElementById('import-file').click()" class="btn btn-outline flex-1">📂 Load File</button>
                 <input type="file" id="import-file" class="hidden" onchange="importData(this)">
             </div>
         </div>
@@ -417,7 +451,7 @@
 
         // --- APP STATE ---
         let appData = {
-            plan: {}, // { "2026-01-18": { "task_id": true, "classes": [1,3], "timers": { "task-1": 1740000000 } } }
+            plan: {}, // { "2026-01-18": { "task_id": true, "classes": [1,3], "timers": {}, "note": "" } }
             tests: [],
             errors: []
         };
@@ -453,7 +487,7 @@
             localStorage.setItem(STATE_KEYS.TESTS, JSON.stringify(appData.tests));
             localStorage.setItem(STATE_KEYS.ERRORS, JSON.stringify(appData.errors));
             renderDashboard(); 
-            showToast("Data Saved"); // AUTO SAVE FEEDBACK
+            // showToast("Data Saved"); // Removed to avoid spam on every click, relying on toast in specific actions
         }
 
         function showToast(msg) {
@@ -461,6 +495,14 @@
             document.getElementById('toast-msg').innerText = msg;
             t.classList.add('show');
             setTimeout(() => { t.classList.remove('show'); }, 2000);
+        }
+
+        function showSuccessPopup() {
+            const overlay = document.getElementById('success-overlay');
+            overlay.classList.add('active');
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 1200);
         }
 
         function nav(viewId, el) {
@@ -507,7 +549,7 @@
             
             if(appData.plan[todayKey]) {
                 const dayData = appData.plan[todayKey];
-                const taskKeys = Object.keys(dayData).filter(k => k !== 'classes' && k !== 'timers');
+                const taskKeys = Object.keys(dayData).filter(k => k !== 'classes' && k !== 'timers' && k !== 'note');
                 todayDone = taskKeys.filter(k => dayData[k] === true).length;
             }
             todayTotal = 15; 
@@ -543,12 +585,18 @@
                 const dayNum = d.getDate();
                 const dayOfWeek = d.getDay(); 
                 
+                // CRITICAL FIX #1: Correct Logic for Micro-Timed Section-Topic Match
                 const microSubject = ["Quant", "LR", "VARC"][dayIndex % 3];
-                const isRC = (dayIndex % 2 === 0);
-                
                 const qTopic = TOPICS.Quant[dayIndex % TOPICS.Quant.length];
                 const lrTopic = TOPICS.LR[dayIndex % TOPICS.LR.length];
                 const vTopic = TOPICS.VARC[dayIndex % TOPICS.VARC.length];
+
+                let microTopicName = "";
+                if(microSubject === 'Quant') microTopicName = qTopic;
+                else if(microSubject === 'LR') microTopicName = lrTopic;
+                else microTopicName = vTopic; // VARC
+
+                const isRC = (dayIndex % 2 === 0);
 
                 let nRead = "", nVocab = "";
                 if (dayOfWeek === 0) {
@@ -590,14 +638,15 @@
                         { time: '21:00 PM', title: 'Sleep Early' }
                     ]);
                 } else {
+                    // CRITICAL FIX #2: Explicit Question Limits to Reduce Overload
                     const tasks = [
                         { time: '06:30 - 06:40', title: 'Scan Error Book (10m)' },
-                        { time: '06:40 - 07:00', title: `Micro-Timed: ${microSubject} (${qTopic.split(' ')[0]}...) - 12 Qs` },
+                        { time: '06:40 - 07:00', title: `Micro-Timed: ${microSubject} (${microTopicName}) - Max 10 Qs` },
                         { time: '07:00 - 07:30', title: 'Analysis + Log Errors' },
-                        { time: '07:30 - 08:00', title: `VARC Foundation: 5 Sentence Meaning + ${isRC ? '1 RC Set' : 'Grammar Rules'}` },
-                        { time: '10:00 - 11:10', title: `Quant Basics: ${qTopic} (Concept + Easy Qs)` },
-                        { time: '11:10 - 12:00', title: `LR Practice: ${lrTopic} (Speed focus)` },
-                        { time: '12:00 - 12:30', title: `VARC Specific: ${vTopic}` },
+                        { time: '07:30 - 08:00', title: `VARC Intensive: 2 RC Sets + Analysis` },
+                        { time: '10:00 - 11:10', title: `Quant Basics: ${qTopic} (Concept + Max 15 Easy Qs)` },
+                        { time: '11:10 - 12:00', title: `LR Practice: ${lrTopic} (Max 2 Sets / 20 Qs)` },
+                        { time: '12:00 - 12:30', title: `VARC Specific: ${vTopic} (Max 15 Qs)` },
                         { time: '15:00 - 16:00', title: '<span class="text-secondary">n8n Automation Skill</span> (Strict 1hr)' },
                         { time: '16:00 - 16:30', title: 'Revision: Formulas & Vocab' },
                         { time: '16:30 - 17:00', title: 'Error Book: Mental Re-solve' }
@@ -631,6 +680,12 @@
                     `;
                     
                     content += renderChecklist(dateStr, nightTasks, 20); 
+
+                    // NEW: Daily Learning Log
+                    const dayNote = appData.plan[dateStr]?.note || '';
+                    content += `
+                        <textarea class="daily-log-area" placeholder="📝 Daily Learning Log: What did you learn in n8n today? Any life hack or self-improvement win?" onblur="saveDayNote('${dateStr}', this.value)">${dayNote}</textarea>
+                    `;
                 }
 
                 card.innerHTML = content;
@@ -672,6 +727,14 @@
                 `;
             });
             return html;
+        }
+
+        // --- NEW: SAVE DAILY NOTE ---
+        function saveDayNote(date, text) {
+            if(!appData.plan[date]) appData.plan[date] = {};
+            appData.plan[date].note = text;
+            saveData();
+            showToast("Log Saved");
         }
         
         // --- FEATURE #1: TIMER LOGIC ---
@@ -731,9 +794,16 @@
         function toggleTask(date, taskId) {
             // Prevent toggling when clicking timer controls handled by stopPropagation
             if (!appData.plan[date]) appData.plan[date] = {};
-            appData.plan[date][taskId] = !appData.plan[date][taskId];
+            
+            const newState = !appData.plan[date][taskId];
+            appData.plan[date][taskId] = newState;
+            
             saveData();
             renderPlan(); 
+            
+            if(newState) {
+                showSuccessPopup();
+            }
         }
 
         function toggleClass(date, slotId) {
@@ -778,6 +848,7 @@
             document.getElementById('t-id').value = '';
             updateTestFormUI();
             document.getElementById('modal-test').classList.remove('hidden');
+            document.getElementById('modal-test').style.visibility = 'visible'; // Ensure visibility
         }
 
         function updateTestFormUI() {
@@ -822,6 +893,7 @@
             saveData();
             closeModal('modal-test');
             renderTestsTable();
+            showToast("Test Logged");
             
             if (entry.wrong > 0 && confirm(`You had ${entry.wrong} wrong answers. Log them in Error Book?`)) {
                 showErrorModal(entry);
@@ -874,7 +946,10 @@
             document.getElementById('t-attempted').value = t.attempted;
             document.getElementById('t-correct').value = t.correct;
             document.getElementById('t-notes').value = t.notes || '';
-            document.getElementById('modal-test').classList.remove('hidden');
+            
+            const modal = document.getElementById('modal-test');
+            modal.classList.remove('hidden');
+            modal.style.visibility = 'visible';
         }
 
         function deleteTest(id) {
@@ -911,7 +986,9 @@
                 updateErrorTypes();
             }
             
-            document.getElementById('modal-error').classList.remove('hidden');
+            const modal = document.getElementById('modal-error');
+            modal.classList.remove('hidden');
+            modal.style.visibility = 'visible';
         }
 
         function saveError(e) {
@@ -936,6 +1013,7 @@
             saveData();
             closeModal('modal-error');
             renderErrors();
+            showToast("Mistake Logged");
         }
 
         function renderErrors(filterSection = 'all') {
@@ -971,6 +1049,7 @@
                 err.fixed = !err.fixed;
                 saveData();
                 renderErrors();
+                if(err.fixed) showSuccessPopup();
             }
         }
 
@@ -1246,9 +1325,27 @@
         }
 
         function resetApp() {
-            if(confirm("Are you sure? This will delete all progress.")) {
-                localStorage.clear();
-                location.reload();
+            if(confirm("Are you sure? This will delete all progress. This cannot be undone.")) {
+                // Clear specific keys instead of all localstorage
+                localStorage.removeItem(STATE_KEYS.PLAN);
+                localStorage.removeItem(STATE_KEYS.TESTS);
+                localStorage.removeItem(STATE_KEYS.ERRORS);
+                
+                // Reset State
+                appData = {
+                    plan: {},
+                    tests: [],
+                    errors: []
+                };
+                
+                // Re-render all views
+                renderDashboard();
+                renderPlan();
+                renderTestsTable();
+                renderErrors(); // This renders the error list
+                renderAnalytics(); // This clears the charts
+                
+                showToast("App Reset Successfully");
             }
         }
     </script>
