@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mayur's CET Top 100 Plan</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --surface-2: #2d2d2d;
+            --primary: #bb86fc;
+            --primary-dark: #3700b3;
+            --secondary: #03dac6;
+            --error: #cf6679;
+            --text: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --success: #00c853;
+            --nav-height: 60px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
+        
+        /* Utils */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-4 { padding: 1rem; }
+        .w-full { width: 100%; }
+        .bold { font-weight: bold; }
+        .text-sm { font-size: 0.85rem; }
+        .text-xs { font-size: 0.75rem; }
+        .text-muted { color: var(--text-muted); }
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--secondary); }
+        .text-error { color: var(--error); }
+
+        /* Components */
+        .btn { border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .btn-primary { background-color: var(--primary); color: #000; }
+        .btn-secondary { background-color: var(--secondary); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--text-muted); color: var(--text); }
+        .btn-danger { background-color: rgba(207, 102, 121, 0.2); color: var(--error); border: 1px solid var(--error); }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        
+        .card { background-color: var(--surface); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--surface-2); padding-bottom: 8px; }
+        
+        input, select, textarea { width: 100%; background: var(--surface-2); border: 1px solid #444; color: var(--text); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 1rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+
+        /* Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height); background: var(--surface); border-top: 1px solid #333; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: env(safe-area-inset-bottom); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.7rem; flex: 1; height: 100%; cursor: pointer; }
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 2px; }
+
+        /* Dashboard specific */
+        .countdown-box { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: white; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
+        .count-number { font-size: 2.5rem; font-weight: 800; line-height: 1; }
+        .progress-circle { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--secondary) 0%, var(--surface-2) 0); display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; }
+        .progress-inner { width: 85px; height: 85px; background: var(--surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+
+        /* Plan specific */
+        .day-card.today { border: 2px solid var(--primary); }
+        .checklist-item { display: flex; align-items: flex-start; margin-bottom: 12px; padding: 8px; background: var(--surface-2); border-radius: 8px; }
+        .custom-checkbox { width: 24px; height: 24px; border: 2px solid var(--text-muted); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; }
+        .custom-checkbox.checked { background: var(--success); border-color: var(--success); }
+        .custom-checkbox.checked::after { content: '✔'; color: white; font-size: 14px; }
+        .task-content { flex: 1; }
+        .task-time { font-size: 0.75rem; color: var(--secondary); font-weight: bold; display: block; margin-bottom: 2px; }
+        .task-title { font-size: 0.95rem; line-height: 1.3; }
+        .class-toggle { display: flex; gap: 8px; margin-top: 8px; }
+        .class-btn { flex: 1; padding: 8px; background: #333; border-radius: 6px; text-align: center; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; }
+        .class-btn.selected { background: var(--primary-dark); border-color: var(--primary); color: white; }
+        .night-header { color: #aaa; text-transform: uppercase; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; margin: 16px 0 8px 0; border-top: 1px solid #333; padding-top: 12px; display: flex; align-items: center; gap: 6px; }
+
+        /* Timer Styles */
+        .timer-btn { margin-top: 8px; padding: 6px 12px; background: #333; border: 1px solid #555; border-radius: 6px; color: #fff; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .timer-display { margin-top: 8px; font-family: monospace; font-size: 1.2rem; background: #000; padding: 4px 12px; border-radius: 6px; display: inline-block; border: 1px solid #333; color: var(--secondary); }
+        .timer-red { color: var(--error); border-color: var(--error); animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* Analytics Bars & Canvas */
+        .chart-container { position: relative; width: 100%; height: 200px; margin-bottom: 15px; border: 1px solid var(--surface-2); border-radius: 8px; background: #1a1a1a; }
+        canvas { width: 100%; height: 100%; display: block; }
+        
+        .bar-container { width: 100%; height: 24px; background: var(--surface-2); border-radius: 4px; overflow: hidden; display: flex; margin-top: 4px; }
+        .bar-segment { height: 100%; }
+        .bar-green { background: var(--success); }
+        .bar-red { background: var(--error); }
+        .bar-gray { background: #555; }
+        .chart-row { margin-bottom: 12px; }
+        
+        /* Error Book */
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; margin-right: 4px; background: #333; color: #ccc; }
+        .priority-high { color: var(--error); border: 1px solid var(--error); }
+
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: var(--surface); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; border-radius: 16px; padding: 20px; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); color: white; padding: 8px 16px;
+            border-radius: 20px; font-size: 0.8rem; z-index: 300;
+            display: flex; align-items: center; gap: 6px;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+            border: 1px solid var(--surface-2);
+        }
+        .toast.show { opacity: 1; }
+        .toast-icon { color: var(--success); }
+
+    </style>
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast">
+        <span class="toast-icon">✔</span> 
+        <span id="toast-msg">Data Saved</span>
+    </div>
+
+    <!-- PAGES -->
+    <div id="app">
+        
+        <!-- DASHBOARD -->
+        <div id="view-dashboard" class="page p-4">
+            <h2 class="text-center mb-4">MBA CET Top 100 <span style="font-size:0.6em; display:block; color:var(--text-muted)">TARGET: JBIMS</span></h2>
+            
+            <div class="countdown-box">
+                <div class="text-sm uppercase tracking-wide opacity-80">Time Left</div>
+                <div id="countdown-display" class="count-number">00:00:00:00</div>
+                <div class="text-xs mt-2">Target: Jan 31, 2026</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>Today's Progress</span>
+                    <span id="today-date" class="text-sm text-muted">Jan 18</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="progress-circle" id="today-circle">
+                        <div class="progress-inner">
+                            <span class="bold" style="font-size: 1.2rem" id="today-pct">0%</span>
+                            <span class="text-xs text-muted">Done</span>
+                        </div>
+                    </div>
+                    <div style="flex:1; margin-left: 20px;">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Plan Completion</span>
+                            <span class="text-primary" id="overall-pct-text">0%</span>
+                        </div>
+                        <div style="height:6px; background:#333; border-radius:3px; overflow:hidden;">
+                            <div id="overall-bar" style="width:0%; height:100%; background:var(--primary);"></div>
+                        </div>
+                        <div class="mt-4 text-xs text-muted">
+                            Tests Logged: <span class="text-white bold" id="total-tests-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-2 mb-4">
+                <button onclick="exportData()" class="btn btn-outline flex-1">Backup Data</button>
+                <button onclick="document.getElementById('import-file').click()" class="btn btn-outline flex-1">Restore</button>
+                <input type="file" id="import-file" class="hidden" onchange="importData(this)">
+            </div>
+        </div>
+
+        <!-- PLAN -->
+        <div id="view-plan" class="page hidden p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2>Daily Schedule</h2>
+                <select id="plan-filter" class="btn-sm" style="width:auto; margin:0;" onchange="renderPlan()">
+                    <option value="today">Today</option>
+                    <option value="all">All Days</option>
+                </select>
+            </div>
+            <div id="plan-container"></div>
+        </div>
+
+        <!-- TESTS LOGGER -->
+        <div id="view-tests" class="page hidden p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2>Tests & Quizzes</h2>
+                <button onclick="showTestModal()" class="btn btn-primary btn-sm">+ Log Test</button>
+            </div>
+
+            <div class="card">
+                <input type="text" id="test-search" placeholder="Search tests..." onkeyup="renderTestsTable()">
+                <div id="tests-list" class="flex-col gap-2"></div>
+            </div>
+        </div>
+
+        <!-- ANALYTICS -->
+        <div id="view-analytics" class="page hidden p-4">
+            <h2>Performance Graphs</h2>
+            <div class="flex gap-2 mb-4 overflow-x-auto">
+                <div class="card p-2 flex-1 text-center" style="min-width: 100px;">
+                    <div class="text-xs text-muted">Accuracy</div>
+                    <div class="bold text-primary" style="font-size:1.2rem" id="kpi-accuracy">0%</div>
+                </div>
+                <div class="card p-2 flex-1 text-center" style="min-width: 100px;">
+                    <div class="text-xs text-muted">Avg Time/Q</div>
+                    <div class="bold text-secondary" style="font-size:1.2rem" id="kpi-time">0m</div>
+                </div>
+                <div class="card p-2 flex-1 text-center" style="min-width: 100px;">
+                    <div class="text-xs text-muted">Best Sec</div>
+                    <div class="bold text-success" style="font-size:1.2rem" id="kpi-best">-</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>Accuracy Trend (Last 10 Tests)</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-trend"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>Section Strength (Avg Acc%)</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-sections"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>Topic Weakness (Top 6)</span>
+                    <button class="btn-xs btn-outline" onclick="generateInsights()">Analyze</button>
+                </div>
+                <div id="chart-topics"></div>
+                <div id="analytics-insights" class="text-sm mt-3 p-2 bg-gray-800 rounded hidden"></div>
+            </div>
+        </div>
+
+        <!-- ERROR BOOK -->
+        <div id="view-errors" class="page hidden p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2>Error Book</h2>
+                <div class="flex gap-2">
+                    <button onclick="startErrorReview()" class="btn btn-secondary btn-sm">Review Mode</button>
+                    <button onclick="showErrorModal()" class="btn btn-primary btn-sm">+ Add</button>
+                </div>
+            </div>
+            
+            <div class="flex gap-2 mb-4 overflow-x-auto">
+                <button class="btn btn-sm btn-outline active" onclick="filterErrors('all')">All</button>
+                <button class="btn btn-sm btn-outline" onclick="filterErrors('Quant')">Quant</button>
+                <button class="btn btn-sm btn-outline" onclick="filterErrors('LR')">LR</button>
+                <button class="btn btn-sm btn-outline" onclick="filterErrors('VARC')">VARC</button>
+            </div>
+
+            <div id="errors-list"></div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="view-settings" class="page hidden p-4">
+            <h2>Settings</h2>
+            <div class="card">
+                <div class="checklist-item">
+                    <div class="task-content">
+                        <div class="task-title">Reset All Data</div>
+                        <div class="text-xs text-muted">Warning: Cannot be undone</div>
+                    </div>
+                    <button onclick="resetApp()" class="btn btn-danger btn-sm">Reset</button>
+                </div>
+                <div class="p-2 text-center text-muted text-xs">
+                    Build for Mayur | Target 2026
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODALS -->
+    <!-- Test Entry Modal -->
+    <div id="modal-test" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modal-test')">&times;</span>
+            <h3>Log Test</h3>
+            <form id="form-test" onsubmit="saveTest(event)">
+                <input type="hidden" id="t-id">
+                <label class="text-xs text-muted">Type</label>
+                <select id="t-type" onchange="updateTestFormUI()">
+                    <option value="Topic">Topic Test</option>
+                    <option value="Sectional">Sectional Test</option>
+                    <option value="Mock">Full Mock</option>
+                    <option value="Quiz">Quiz (1-4)</option>
+                </select>
+                
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <label class="text-xs text-muted">Section</label>
+                        <select id="t-section" onchange="populateTopics('t-topic', this.value)">
+                            <option value="Quant">Quant</option>
+                            <option value="LR">LR</option>
+                            <option value="VARC">VARC</option>
+                        </select>
+                    </div>
+                    <div class="flex-1" id="div-quiz-num">
+                        <label class="text-xs text-muted">Quiz #</label>
+                        <select id="t-quiz-num">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label class="text-xs text-muted">Topic</label>
+                <select id="t-topic"></select>
+
+                <div class="flex gap-2">
+                    <input type="number" id="t-time" placeholder="Mins" required>
+                    <input type="number" id="t-total" placeholder="Total Qs" required>
+                </div>
+                <div class="flex gap-2">
+                    <input type="number" id="t-attempted" placeholder="Attempted" required>
+                    <input type="number" id="t-correct" placeholder="Correct" required>
+                </div>
+                <textarea id="t-notes" placeholder="Notes (Strategy used?)" rows="2"></textarea>
+                <button type="submit" class="btn btn-primary w-full">Save Entry</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Error Entry Modal -->
+    <div id="modal-error" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modal-error')">&times;</span>
+            <h3>Log Mistake</h3>
+            <form id="form-error" onsubmit="saveError(event)">
+                <input type="hidden" id="e-id">
+                <div class="flex gap-2">
+                    <select id="e-section" onchange="populateTopics('e-topic', this.value); updateErrorTypes()">
+                        <option value="Quant">Quant</option>
+                        <option value="LR">LR</option>
+                        <option value="VARC">VARC</option>
+                    </select>
+                    <select id="e-type">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <select id="e-topic"></select>
+                <textarea id="e-desc" placeholder="Question/Context" rows="2" required></textarea>
+                <textarea id="e-mistake" placeholder="My Mistake (Why I got it wrong)" rows="2" required style="border-color:var(--error)"></textarea>
+                <textarea id="e-fix" placeholder="Correct Rule / Fix" rows="2" required style="border-color:var(--success)"></textarea>
+                <button type="submit" class="btn btn-primary w-full">Add to Error Book</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="nav('view-dashboard', this)">
+            <div class="nav-icon">🏠</div>
+            <span>Home</span>
+        </div>
+        <div class="nav-item" onclick="nav('view-plan', this)">
+            <div class="nav-icon">📅</div>
+            <span>Plan</span>
+        </div>
+        <div class="nav-item" onclick="nav('view-tests', this)">
+            <div class="nav-icon">📝</div>
+            <span>Tests</span>
+        </div>
+        <div class="nav-item" onclick="nav('view-analytics', this)">
+            <div class="nav-icon">📊</div>
+            <span>Stats</span>
+        </div>
+        <div class="nav-item" onclick="nav('view-errors', this)">
+            <div class="nav-icon">📕</div>
+            <span>Errors</span>
+        </div>
+        <div class="nav-item" onclick="nav('view-settings', this)">
+            <div class="nav-icon">⚙️</div>
+            <span>Set</span>
+        </div>
+    </nav>
+
+    <script>
+        // --- DATA & CONFIG ---
+        const TOPICS = {
+            Quant: ["Ratio/Prop/Variation", "Percentage", "Profit-Loss-Discount", "SI/CI (Basic)"],
+            LR: ["Series", "Coding-Decoding", "Blood Relation", "Syllogisms"],
+            VARC: ["Grammar", "RC", "Root Words", "VA/Sentence Meaning"]
+        };
+
+        const ERROR_TYPES = {
+            Quant: ["Concept", "Calculation", "Formula", "Silly Mistake", "Selection Error"],
+            LR: ["Pattern Missed", "Assumption", "Misread Data", "Silly Mistake"],
+            VARC: ["Grammar Rule", "Vocab Gap", "RC Inference", "Sentence Meaning", "Critical Reasoning"]
+        };
+
+        const STATE_KEYS = {
+            PLAN: 'mayur_plan_v1',
+            TESTS: 'mayur_tests_v1',
+            ERRORS: 'mayur_errors_v1'
+        };
+
+        // --- APP STATE ---
+        let appData = {
+            plan: {}, // { "2026-01-18": { "task_id": true, "classes": [1,3], "timers": { "task-1": 1740000000 } } }
+            tests: [],
+            errors: []
+        };
+        
+        // Timer Interval Globals
+        let activeTimerInterval = null;
+
+        // --- INIT ---
+        window.onload = function() {
+            loadData();
+            startCountdown();
+            renderDashboard();
+            renderPlan();
+            populateTopics('t-topic', 'Quant');
+            populateTopics('e-topic', 'Quant');
+            updateErrorTypes();
+            
+            // Global timer ticker for Plan View
+            setInterval(checkActiveTimers, 1000);
+        };
+
+        function loadData() {
+            const p = localStorage.getItem(STATE_KEYS.PLAN);
+            const t = localStorage.getItem(STATE_KEYS.TESTS);
+            const e = localStorage.getItem(STATE_KEYS.ERRORS);
+            if(p) appData.plan = JSON.parse(p);
+            if(t) appData.tests = JSON.parse(t);
+            if(e) appData.errors = JSON.parse(e);
+        }
+
+        function saveData() {
+            localStorage.setItem(STATE_KEYS.PLAN, JSON.stringify(appData.plan));
+            localStorage.setItem(STATE_KEYS.TESTS, JSON.stringify(appData.tests));
+            localStorage.setItem(STATE_KEYS.ERRORS, JSON.stringify(appData.errors));
+            renderDashboard(); 
+            showToast("Data Saved"); // AUTO SAVE FEEDBACK
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => { t.classList.remove('show'); }, 2000);
+        }
+
+        function nav(viewId, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            if(el) el.classList.add('active');
+
+            if(viewId === 'view-dashboard') renderDashboard();
+            if(viewId === 'view-plan') renderPlan();
+            if(viewId === 'view-tests') renderTestsTable();
+            if(viewId === 'view-analytics') renderAnalytics(); // Renders graphs
+            if(viewId === 'view-errors') renderErrors();
+        }
+
+        // --- DASHBOARD LOGIC ---
+        function startCountdown() {
+            const target = new Date("2026-01-31T08:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = target - now;
+                
+                if(diff < 0) {
+                    document.getElementById('countdown-display').innerText = "EXAM TIME!";
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('countdown-display').innerText = `${d}d ${h}h ${m}m`;
+            }, 1000);
+            
+            // Set Today's Date
+            const options = { weekday: 'long', month: 'short', day: 'numeric' };
+            document.getElementById('today-date').innerText = new Date().toLocaleDateString('en-IN', options);
+        }
+
+        function renderDashboard() {
+            const todayKey = getTodayKey();
+            let todayTotal = 0;
+            let todayDone = 0;
+            
+            if(appData.plan[todayKey]) {
+                const dayData = appData.plan[todayKey];
+                const taskKeys = Object.keys(dayData).filter(k => k !== 'classes' && k !== 'timers');
+                todayDone = taskKeys.filter(k => dayData[k] === true).length;
+            }
+            todayTotal = 15; 
+            const todayPct = Math.round((todayDone / todayTotal) * 100);
+            
+            document.getElementById('today-pct').innerText = `${todayPct}%`;
+            document.getElementById('today-circle').style.background = `conic-gradient(var(--secondary) ${todayPct}%, var(--surface-2) 0)`;
+
+            const totalDays = 14;
+            const daysPassed = Math.max(0, (new Date() - new Date("2026-01-18")) / (1000 * 60 * 60 * 24));
+            const overallPct = Math.min(100, Math.round((daysPassed / totalDays) * 100));
+            document.getElementById('overall-pct-text').innerText = `${overallPct}%`;
+            document.getElementById('overall-bar').style.width = `${overallPct}%`;
+
+            document.getElementById('total-tests-count').innerText = appData.tests.length;
+        }
+
+        // --- PLAN GENERATOR ENGINE ---
+        function renderPlan() {
+            const container = document.getElementById('plan-container');
+            container.innerHTML = '';
+            const filter = document.getElementById('plan-filter').value;
+            
+            const startDate = new Date("2026-01-18");
+            const endDate = new Date("2026-01-31");
+            const todayStr = getTodayKey();
+
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateStr = d.toISOString().split('T')[0];
+                if (filter === 'today' && dateStr !== todayStr) continue;
+
+                const dayIndex = Math.floor((d - startDate) / (1000 * 60 * 60 * 24)); 
+                const dayNum = d.getDate();
+                const dayOfWeek = d.getDay(); 
+                
+                const microSubject = ["Quant", "LR", "VARC"][dayIndex % 3];
+                const isRC = (dayIndex % 2 === 0);
+                
+                const qTopic = TOPICS.Quant[dayIndex % TOPICS.Quant.length];
+                const lrTopic = TOPICS.LR[dayIndex % TOPICS.LR.length];
+                const vTopic = TOPICS.VARC[dayIndex % TOPICS.VARC.length];
+
+                let nRead = "", nVocab = "";
+                if (dayOfWeek === 0) {
+                    nRead = "Day S: Re-read easy story/article";
+                    nVocab = "Day S: Review week's hard words";
+                } else if ([1, 3, 5].includes(dayOfWeek)) {
+                    nRead = "Day A: Re-read 1 RC (Meaning Only, No Qs)";
+                    nVocab = "Day A: 10 New Words + Sentences";
+                } else {
+                    nRead = "Day B: Read Simple Article (Understand Idea)";
+                    nVocab = "Day B: 1 Root Word + 5 Derived";
+                }
+
+                let isTestDay = (dayNum === 31);
+                let isRestDay = (dayNum === 30);
+                
+                const card = document.createElement('div');
+                card.className = `card day-card ${dateStr === todayStr ? 'today' : ''}`;
+                
+                let content = `
+                    <div class="card-header">
+                        <span class="bold ${dateStr === todayStr ? 'text-primary' : ''}">${d.toLocaleDateString('en-IN', {weekday:'short', day:'numeric'})}</span>
+                        <span class="text-xs tag">${isTestDay ? 'TEST DAY' : (13 - dayIndex) + ' Days left'}</span>
+                    </div>
+                `;
+
+                if (isTestDay) {
+                    content += renderChecklist(dateStr, [
+                        { time: '07:00 AM', title: 'Wake up + Light Breakfast' },
+                        { time: '08:00 AM', title: 'Review Error Book (Only Fixes)' },
+                        { time: 'EXAM', title: 'Strategy: Easy first, Skip >60s, Maximize LR' },
+                        { time: 'Post-Exam', title: 'Relax! You did your best.' }
+                    ]);
+                } else if (isRestDay) {
+                     content += renderChecklist(dateStr, [
+                        { time: 'Morning', title: 'Light Formula Revision (Quant)' },
+                        { time: 'Afternoon', title: 'Review Error Book tags' },
+                        { time: 'Evening', title: 'Pack bag, Identity Proof, Admit Card' },
+                        { time: '21:00 PM', title: 'Sleep Early' }
+                    ]);
+                } else {
+                    const tasks = [
+                        { time: '06:30 - 06:40', title: 'Scan Error Book (10m)' },
+                        { time: '06:40 - 07:00', title: `Micro-Timed: ${microSubject} (${qTopic.split(' ')[0]}...) - 12 Qs` },
+                        { time: '07:00 - 07:30', title: 'Analysis + Log Errors' },
+                        { time: '07:30 - 08:00', title: `VARC Foundation: 5 Sentence Meaning + ${isRC ? '1 RC Set' : 'Grammar Rules'}` },
+                        { time: '10:00 - 11:10', title: `Quant Basics: ${qTopic} (Concept + Easy Qs)` },
+                        { time: '11:10 - 12:00', title: `LR Practice: ${lrTopic} (Speed focus)` },
+                        { time: '12:00 - 12:30', title: `VARC Specific: ${vTopic}` },
+                        { time: '15:00 - 16:00', title: '<span class="text-secondary">n8n Automation Skill</span> (Strict 1hr)' },
+                        { time: '16:00 - 16:30', title: 'Revision: Formulas & Vocab' },
+                        { time: '16:30 - 17:00', title: 'Error Book: Mental Re-solve' }
+                    ];
+
+                    content += renderChecklist(dateStr, tasks);
+                    
+                    content += `
+                        <div class="mt-2 p-2 bg-surface-2 rounded">
+                            <div class="text-xs text-muted mb-1">Select 2 Class Slots:</div>
+                            <div class="class-toggle">
+                                <div class="class-btn ${getClassState(dateStr, 1) ? 'selected' : ''}" onclick="toggleClass('${dateStr}', 1)">17:00</div>
+                                <div class="class-btn ${getClassState(dateStr, 2) ? 'selected' : ''}" onclick="toggleClass('${dateStr}', 2)">19:00</div>
+                                <div class="class-btn ${getClassState(dateStr, 3) ? 'selected' : ''}" onclick="toggleClass('${dateStr}', 3)">21:00</div>
+                            </div>
+                        </div>
+                    `;
+
+                    const nightTasks = [
+                        { time: '22:30 - 22:45', title: 'Error Book: Light Review (5 mistakes)' },
+                        { time: '22:45 - 23:10', title: nRead },
+                        { time: '23:10 - 23:30', title: nVocab },
+                        { time: '23:30 - 23:50', title: 'Grammar: 1 Rule + 3 Examples (No Qs)' },
+                        { time: '23:50 - 00:00', title: 'Shutdown: No Phone, Prep for sleep' }
+                    ];
+
+                    content += `
+                        <div class="night-header">
+                            <span>🌙 Night Block (Light / No Pressure)</span>
+                        </div>
+                    `;
+                    
+                    content += renderChecklist(dateStr, nightTasks, 20); 
+                }
+
+                card.innerHTML = content;
+                container.appendChild(card);
+            }
+        }
+
+        function renderChecklist(date, items, idOffset = 0) {
+            let html = '';
+            items.forEach((item, idx) => {
+                const taskId = `task-${idx + idOffset}`;
+                const isChecked = appData.plan[date] && appData.plan[date][taskId];
+                
+                // FEATURE #1: Exam Timer Logic
+                let timerHtml = '';
+                if(item.title.includes("Micro-Timed")) {
+                    const timerId = `timer-${date}-${taskId}`;
+                    timerHtml = `
+                        <div id="timer-wrapper-${timerId}" class="mt-2">
+                            <button class="timer-btn" onclick="startTaskTimer('${date}', '${taskId}', 20); event.stopPropagation();">
+                                ⏱️ Start 20m Timer
+                            </button>
+                            <div id="${timerId}" class="timer-display hidden">00:00</div>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <div class="checklist-item flex-col" style="align-items:stretch" onclick="toggleTask('${date}', '${taskId}')">
+                        <div class="flex items-start">
+                            <div class="custom-checkbox ${isChecked ? 'checked' : ''}"></div>
+                            <div class="task-content">
+                                <span class="task-time">${item.time}</span>
+                                <span class="task-title" style="${isChecked ? 'text-decoration:line-through; color:#777' : ''}">${item.title}</span>
+                            </div>
+                        </div>
+                        ${timerHtml}
+                    </div>
+                `;
+            });
+            return html;
+        }
+        
+        // --- FEATURE #1: TIMER LOGIC ---
+        function startTaskTimer(date, taskId, minutes) {
+            if(!appData.plan[date]) appData.plan[date] = {};
+            if(!appData.plan[date].timers) appData.plan[date].timers = {};
+            
+            const target = Date.now() + (minutes * 60 * 1000);
+            appData.plan[date].timers[taskId] = target;
+            saveData();
+            
+            // Force UI update immediately
+            checkActiveTimers();
+        }
+        
+        function checkActiveTimers() {
+            // This runs every second
+            const date = getTodayKey();
+            if(!appData.plan[date] || !appData.plan[date].timers) return;
+            
+            Object.keys(appData.plan[date].timers).forEach(taskId => {
+                const target = appData.plan[date].timers[taskId];
+                const timerId = `timer-${date}-${taskId}`;
+                const displayEl = document.getElementById(timerId);
+                const btnEl = displayEl ? displayEl.parentElement.querySelector('.timer-btn') : null;
+                
+                if(displayEl && btnEl) {
+                    const now = Date.now();
+                    const remaining = target - now;
+                    
+                    if(remaining > 0) {
+                        // Timer Running
+                        displayEl.classList.remove('hidden');
+                        btnEl.classList.add('hidden'); // Hide start button
+                        
+                        const m = Math.floor(remaining / 60000);
+                        const s = Math.floor((remaining % 60000) / 1000);
+                        displayEl.innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                        
+                        // Red Alert < 2 mins
+                        if(remaining < 120000) {
+                            displayEl.classList.add('timer-red');
+                        }
+                    } else {
+                        // Timer Finished
+                        displayEl.classList.remove('hidden');
+                        displayEl.classList.remove('timer-red');
+                        displayEl.style.borderColor = 'var(--success)';
+                        displayEl.style.color = 'var(--success)';
+                        displayEl.innerText = "DONE!";
+                        btnEl.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        function toggleTask(date, taskId) {
+            // Prevent toggling when clicking timer controls handled by stopPropagation
+            if (!appData.plan[date]) appData.plan[date] = {};
+            appData.plan[date][taskId] = !appData.plan[date][taskId];
+            saveData();
+            renderPlan(); 
+        }
+
+        function toggleClass(date, slotId) {
+            if (!appData.plan[date]) appData.plan[date] = {};
+            if (!appData.plan[date].classes) appData.plan[date].classes = [];
+            
+            const idx = appData.plan[date].classes.indexOf(slotId);
+            if (idx > -1) {
+                appData.plan[date].classes.splice(idx, 1);
+            } else {
+                if(appData.plan[date].classes.length < 2) {
+                    appData.plan[date].classes.push(slotId);
+                } else {
+                    alert("Select only 2 slots!");
+                    return;
+                }
+            }
+            saveData();
+            renderPlan();
+        }
+
+        function getClassState(date, slotId) {
+            return appData.plan[date] && appData.plan[date].classes && appData.plan[date].classes.includes(slotId);
+        }
+
+        // --- TEST MODULE ---
+        function populateTopics(selectId, section) {
+            const sel = document.getElementById(selectId);
+            sel.innerHTML = '';
+            if(TOPICS[section]) {
+                TOPICS[section].forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.innerText = t;
+                    sel.appendChild(opt);
+                });
+            }
+        }
+
+        function showTestModal() {
+            document.getElementById('form-test').reset();
+            document.getElementById('t-id').value = '';
+            updateTestFormUI();
+            document.getElementById('modal-test').classList.remove('hidden');
+        }
+
+        function updateTestFormUI() {
+            const type = document.getElementById('t-type').value;
+            const isQuiz = type === 'Quiz';
+            const isMock = type === 'Mock';
+            
+            document.getElementById('div-quiz-num').classList.toggle('hidden', !isQuiz);
+            document.getElementById('t-section').disabled = isMock;
+            document.getElementById('t-topic').disabled = isMock;
+        }
+
+        function saveTest(e) {
+            e.preventDefault();
+            const id = document.getElementById('t-id').value || Date.now().toString();
+            const type = document.getElementById('t-type').value;
+            
+            const entry = {
+                id: id,
+                date: getTodayKey(),
+                type: type,
+                section: type === 'Mock' ? 'All' : document.getElementById('t-section').value,
+                topic: type === 'Mock' ? 'Full Syllabus' : document.getElementById('t-topic').value,
+                quizNum: type === 'Quiz' ? document.getElementById('t-quiz-num').value : null,
+                time: parseInt(document.getElementById('t-time').value),
+                total: parseInt(document.getElementById('t-total').value),
+                attempted: parseInt(document.getElementById('t-attempted').value),
+                correct: parseInt(document.getElementById('t-correct').value),
+                notes: document.getElementById('t-notes').value
+            };
+
+            entry.wrong = entry.attempted - entry.correct;
+            entry.skipped = entry.total - entry.attempted;
+
+            const existingIdx = appData.tests.findIndex(t => t.id === entry.id);
+            if (existingIdx > -1) {
+                appData.tests[existingIdx] = entry;
+            } else {
+                appData.tests.unshift(entry);
+            }
+            
+            saveData();
+            closeModal('modal-test');
+            renderTestsTable();
+            
+            if (entry.wrong > 0 && confirm(`You had ${entry.wrong} wrong answers. Log them in Error Book?`)) {
+                showErrorModal(entry);
+            }
+        }
+
+        function renderTestsTable() {
+            const list = document.getElementById('tests-list');
+            list.innerHTML = '';
+            const search = document.getElementById('test-search').value.toLowerCase();
+
+            appData.tests.forEach(t => {
+                if (search && !t.topic.toLowerCase().includes(search) && !t.type.toLowerCase().includes(search)) return;
+
+                const acc = Math.round((t.correct / t.attempted) * 100) || 0;
+                const item = document.createElement('div');
+                item.className = 'card p-2 mb-2';
+                item.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs text-muted">${t.date} • ${t.type} ${t.quizNum ? '#'+t.quizNum : ''}</span>
+                        <div class="text-xs">
+                            <button class="btn-xs btn-outline" onclick="editTest('${t.id}')">Edit</button>
+                            <button class="btn-xs btn-outline text-error" onclick="deleteTest('${t.id}')">Del</button>
+                        </div>
+                    </div>
+                    <div class="bold text-sm mb-1">${t.section} - ${t.topic}</div>
+                    <div class="flex justify-between text-xs mt-2">
+                        <span>Score: <b class="text-success">${t.correct}</b> / <b class="text-error">${t.wrong}</b> / ${t.skipped}</span>
+                        <span>Acc: <b>${acc}%</b></span>
+                        <span>Time: ${t.time}m</span>
+                    </div>
+                    ${t.notes ? `<div class="text-xs text-muted mt-1 italic">"${t.notes}"</div>` : ''}
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function editTest(id) {
+            const t = appData.tests.find(x => x.id === id);
+            if(!t) return;
+            document.getElementById('t-id').value = t.id;
+            document.getElementById('t-type').value = t.type;
+            updateTestFormUI();
+            document.getElementById('t-section').value = t.section;
+            populateTopics('t-topic', t.section);
+            document.getElementById('t-topic').value = t.topic;
+            if(t.quizNum) document.getElementById('t-quiz-num').value = t.quizNum;
+            document.getElementById('t-time').value = t.time;
+            document.getElementById('t-total').value = t.total;
+            document.getElementById('t-attempted').value = t.attempted;
+            document.getElementById('t-correct').value = t.correct;
+            document.getElementById('t-notes').value = t.notes || '';
+            document.getElementById('modal-test').classList.remove('hidden');
+        }
+
+        function deleteTest(id) {
+            if(confirm("Delete this test record?")) {
+                appData.tests = appData.tests.filter(t => t.id !== id);
+                saveData();
+                renderTestsTable();
+            }
+        }
+
+        // --- ERROR BOOK MODULE ---
+        function updateErrorTypes() {
+            const sec = document.getElementById('e-section').value;
+            const sel = document.getElementById('e-type');
+            sel.innerHTML = '';
+            if(ERROR_TYPES[sec]) {
+                ERROR_TYPES[sec].forEach(type => {
+                    const opt = document.createElement('option');
+                    opt.value = type;
+                    opt.innerText = type;
+                    sel.appendChild(opt);
+                });
+            }
+        }
+
+        function showErrorModal(prefillTest = null) {
+            document.getElementById('form-error').reset();
+            document.getElementById('e-id').value = '';
+            
+            if(prefillTest) {
+                document.getElementById('e-section').value = prefillTest.section;
+                populateTopics('e-topic', prefillTest.section);
+                document.getElementById('e-topic').value = prefillTest.topic;
+                updateErrorTypes();
+            }
+            
+            document.getElementById('modal-error').classList.remove('hidden');
+        }
+
+        function saveError(e) {
+            e.preventDefault();
+            const id = document.getElementById('e-id').value || Date.now().toString();
+            const entry = {
+                id: id,
+                date: getTodayKey(),
+                section: document.getElementById('e-section').value,
+                topic: document.getElementById('e-topic').value,
+                type: document.getElementById('e-type').value,
+                desc: document.getElementById('e-desc').value,
+                mistake: document.getElementById('e-mistake').value,
+                fix: document.getElementById('e-fix').value,
+                fixed: false
+            };
+            
+            const existingIdx = appData.errors.findIndex(x => x.id === entry.id);
+            if(existingIdx > -1) appData.errors[existingIdx] = entry;
+            else appData.errors.unshift(entry);
+            
+            saveData();
+            closeModal('modal-error');
+            renderErrors();
+        }
+
+        function renderErrors(filterSection = 'all') {
+            const list = document.getElementById('errors-list');
+            list.innerHTML = '';
+            
+            appData.errors.forEach(e => {
+                if(filterSection !== 'all' && e.section !== filterSection) return;
+                
+                const card = document.createElement('div');
+                card.className = 'card p-2 mb-2';
+                card.style.borderLeft = e.fixed ? '4px solid var(--success)' : '4px solid var(--error)';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span class="tag">${e.section}</span>
+                            <span class="tag">${e.type}</span>
+                        </div>
+                        <button class="btn-xs btn-outline" onclick="toggleErrorFixed('${e.id}')">${e.fixed ? 'Undo' : 'Mark Fixed'}</button>
+                    </div>
+                    <div class="text-sm bold mb-1">${e.topic}</div>
+                    <div class="text-sm text-muted italic mb-2">"${e.desc}"</div>
+                    <div class="text-sm mb-1"><span class="text-error">Mistake:</span> ${e.mistake}</div>
+                    <div class="text-sm"><span class="text-success">Fix:</span> ${e.fix}</div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function toggleErrorFixed(id) {
+            const err = appData.errors.find(e => e.id === id);
+            if(err) {
+                err.fixed = !err.fixed;
+                saveData();
+                renderErrors();
+            }
+        }
+
+        function filterErrors(sec) {
+            document.querySelectorAll('#view-errors .btn-outline').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderErrors(sec);
+        }
+
+        function startErrorReview() {
+            const unfixed = appData.errors.filter(e => !e.fixed);
+            if(unfixed.length === 0) { alert("Good job! No active errors found."); return; }
+            
+            const shuffled = unfixed.sort(() => 0.5 - Math.random()).slice(0, 10);
+            let msg = "Review these 10 items:\n\n";
+            shuffled.forEach((e, i) => {
+                msg += `${i+1}. ${e.topic} (${e.type})\n   Fix: ${e.fix}\n\n`;
+            });
+            alert(msg);
+        }
+
+        // --- ANALYTICS ---
+        function renderAnalytics() {
+            // Stats Calculation
+            if (appData.tests.length === 0) return;
+
+            let totalAtt = 0, totalCorr = 0, totalTime = 0, totalQs = 0;
+            const sectionStats = { Quant: {c:0, a:0}, LR: {c:0, a:0}, VARC: {c:0, a:0} };
+            const topicStats = {};
+
+            appData.tests.forEach(t => {
+                totalAtt += t.attempted;
+                totalCorr += t.correct;
+                totalTime += t.time;
+                totalQs += t.attempted;
+
+                if(t.section !== 'All' && sectionStats[t.section]) {
+                    sectionStats[t.section].c += t.correct;
+                    sectionStats[t.section].a += t.attempted;
+                }
+
+                if(!topicStats[t.topic]) topicStats[t.topic] = {c:0, a:0};
+                topicStats[t.topic].c += t.correct;
+                topicStats[t.topic].a += t.attempted;
+            });
+
+            // KPIs
+            const acc = totalAtt > 0 ? Math.round((totalCorr/totalAtt)*100) : 0;
+            document.getElementById('kpi-accuracy').innerText = acc + "%";
+
+            const avgTime = totalQs > 0 ? (totalTime / totalQs).toFixed(1) : 0;
+            document.getElementById('kpi-time').innerText = avgTime + "m";
+
+            let bestSec = '-';
+            let bestAcc = -1;
+            Object.keys(sectionStats).forEach(k => {
+                const sAcc = sectionStats[k].a > 0 ? (sectionStats[k].c / sectionStats[k].a) : 0;
+                if(sAcc > bestAcc && sectionStats[k].a > 0) {
+                    bestAcc = sAcc;
+                    bestSec = k;
+                }
+            });
+            document.getElementById('kpi-best').innerText = bestSec;
+
+            // DRAW GRAPHS
+            // 1. Trend Chart (Last 10)
+            const recentTests = appData.tests.slice(0, 10).reverse();
+            const trendData = recentTests.map(t => t.attempted > 0 ? (t.correct/t.attempted)*100 : 0);
+            drawSimpleLineChart('chart-trend', trendData);
+
+            // 2. Section Chart
+            const secData = [
+                sectionStats.Quant.a > 0 ? (sectionStats.Quant.c/sectionStats.Quant.a)*100 : 0,
+                sectionStats.LR.a > 0 ? (sectionStats.LR.c/sectionStats.LR.a)*100 : 0,
+                sectionStats.VARC.a > 0 ? (sectionStats.VARC.c/sectionStats.VARC.a)*100 : 0
+            ];
+            drawSimpleBarChart('chart-sections', secData, ['Quant', 'LR', 'VARC']);
+
+            // 3. Topic Weakness (HTML Bars)
+            const chartTop = document.getElementById('chart-topics');
+            chartTop.innerHTML = '';
+            const sortedTopics = Object.keys(topicStats)
+                .map(k => ({ topic: k, acc: (topicStats[k].c / topicStats[k].a)*100 }))
+                .sort((a,b) => a.acc - b.acc)
+                .slice(0, 6);
+            
+            sortedTopics.forEach(item => {
+                chartTop.innerHTML += `
+                    <div class="chart-row">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>${item.topic}</span>
+                            <span>${Math.round(item.acc)}%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-segment bar-green" style="width: ${item.acc}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- GRAPHING LIBRARY (CANVAS) ---
+        function drawSimpleLineChart(canvasId, data) {
+            const canvas = document.getElementById(canvasId);
+            const parent = canvas.parentElement;
+            canvas.width = parent.offsetWidth;
+            canvas.height = parent.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const pad = 30;
+
+            ctx.clearRect(0,0,w,h);
+            
+            // Draw Axis
+            ctx.beginPath();
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 1;
+            ctx.moveTo(pad, pad);
+            ctx.lineTo(pad, h-pad);
+            ctx.lineTo(w-pad, h-pad);
+            ctx.stroke();
+
+            // Draw Guides (50%, 100%)
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(pad, h-pad - (h-2*pad)*0.5);
+            ctx.lineTo(w-pad, h-pad - (h-2*pad)*0.5);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // FEATURE #2: JBIMS TARGET LINE (85%)
+            const targetY = (h - pad) - (0.85) * (h - 2*pad);
+            ctx.beginPath();
+            ctx.strokeStyle = '#cf6679'; // Red color
+            ctx.setLineDash([5, 5]);
+            ctx.moveTo(pad, targetY);
+            ctx.lineTo(w-pad, targetY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            // Label for Target
+            ctx.fillStyle = '#cf6679';
+            ctx.font = '10px sans-serif';
+            ctx.fillText("JBIMS Target (85%)", w - 110, targetY - 5);
+
+            if(data.length < 2) {
+                ctx.fillStyle = '#aaa';
+                ctx.font = '12px sans-serif';
+                ctx.fillText("Not enough data", w/2 - 40, h/2);
+                return;
+            }
+
+            // Draw Line
+            const xStep = (w - 2*pad) / (data.length - 1);
+            ctx.beginPath();
+            ctx.strokeStyle = '#bb86fc';
+            ctx.lineWidth = 3;
+
+            const getXY = (val, i) => {
+                const x = pad + i * xStep;
+                const y = (h - pad) - (val / 100) * (h - 2*pad);
+                return [x, y];
+            }
+
+            data.forEach((val, i) => {
+                const [x, y] = getXY(val, i);
+                if(i===0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Draw Dots
+            ctx.fillStyle = '#03dac6';
+            data.forEach((val, i) => {
+                const [x, y] = getXY(val, i);
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI*2);
+                ctx.fill();
+            });
+        }
+
+        function drawSimpleBarChart(canvasId, data, labels) {
+            const canvas = document.getElementById(canvasId);
+            const parent = canvas.parentElement;
+            canvas.width = parent.offsetWidth;
+            canvas.height = parent.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const pad = 30;
+            const barWidth = (w - 2*pad) / data.length - 20;
+
+            ctx.clearRect(0,0,w,h);
+            
+            // Draw Axis
+            ctx.beginPath();
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 1;
+            ctx.moveTo(pad, pad);
+            ctx.lineTo(pad, h-pad);
+            ctx.lineTo(w-pad, h-pad);
+            ctx.stroke();
+
+            const colors = ['#bb86fc', '#03dac6', '#cf6679'];
+
+            data.forEach((val, i) => {
+                const x = pad + 10 + i * ((w - 2*pad)/data.length);
+                const barH = (val / 100) * (h - 2*pad);
+                const y = (h - pad) - barH;
+
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fillRect(x, y, barWidth, barH);
+
+                // Label
+                ctx.fillStyle = '#ccc';
+                ctx.font = '10px sans-serif';
+                ctx.fillText(labels[i], x + barWidth/2 - 15, h - pad + 15);
+                
+                // Value
+                ctx.fillStyle = '#fff';
+                ctx.fillText(Math.round(val)+"%", x + barWidth/2 - 10, y - 5);
+            });
+        }
+
+        function generateInsights() {
+            const insightsDiv = document.getElementById('analytics-insights');
+            const totalAtt = appData.tests.reduce((sum, t) => sum + t.attempted, 0);
+            const totalCorr = appData.tests.reduce((sum, t) => sum + t.correct, 0);
+            const overallAcc = totalAtt ? (totalCorr/totalAtt)*100 : 0;
+
+            let html = "<b>Insights:</b><ul class='mb-0 pl-4'>";
+            
+            if(overallAcc < 60) html += "<li>Overall accuracy low. Slow down, focus on selection.</li>";
+            
+            const varcErrs = appData.errors.filter(e => e.section === 'VARC').length;
+            if(varcErrs > 5) html += "<li>VARC: High error count. Review 'Sentence Meaning' basics.</li>";
+
+            html += "</ul>";
+            insightsDiv.innerHTML = html;
+            insightsDiv.classList.remove('hidden');
+        }
+
+        // --- UTILS ---
+        function getTodayKey() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "mayur_cet_backup_" + getTodayKey() + ".json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const json = JSON.parse(e.target.result);
+                appData = json;
+                saveData();
+                alert("Data restored successfully!");
+                location.reload();
+            };
+            reader.readAsText(file);
+        }
+
+        function resetApp() {
+            if(confirm("Are you sure? This will delete all progress.")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
