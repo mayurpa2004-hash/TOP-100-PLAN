@@ -664,8 +664,8 @@
                         // MODIFIED: Practice + Analysis Block (Replaces old slots)
                         { time: '11:10 - 12:30', title: `Practice: LR (15 Qs) + Quant (15 Qs) + Deep Analysis` },
                         
-                        // Afternoon (Unchanged)
-                        { time: '15:00 - 16:00', title: '<span class="text-secondary">n8n Automation Skill</span> (Strict 1hr)' },
+                        // Afternoon (Modified: n8n removed from here)
+                        { time: '15:00 - 16:00', title: 'Abstract/Visual Reasoning: Max 25 Qs (Speed Focus)' },
                         { time: '16:00 - 16:30', title: 'Revision: Formulas & Vocab' },
                         { time: '16:30 - 17:00', title: 'Error Book: Mental Re-solve' }
                     ];
@@ -683,17 +683,16 @@
                         </div>
                     `;
 
+                    // Night Block (Modified: n8n added)
                     const nightTasks = [
-                        { time: '22:30 - 22:45', title: 'Error Book: Light Review (5 mistakes)' },
-                        { time: '22:45 - 23:10', title: nRead },
-                        { time: '23:10 - 23:30', title: nVocab },
-                        { time: '23:30 - 23:50', title: 'Grammar: 1 Rule + 3 Examples (No Qs)' },
-                        { time: '23:50 - 00:00', title: 'Shutdown: No Phone, Prep for sleep' }
+                        { time: '22:30 - 23:30', title: '<span class="text-secondary">n8n Automation Skill</span> (Laptop Mode)' },
+                        { time: '23:30 - 23:45', title: 'Error Book: Light Review (5 mistakes)' },
+                        { time: '23:45 - 00:00', title: 'Calm Reading & Shutdown (No Phone)' }
                     ];
 
                     content += `
                         <div class="night-header">
-                            <span>🌙 Night Block (Light / No Pressure)</span>
+                            <span>🌙 Night Block (n8n + Light Revision)</span>
                         </div>
                     `;
                     
